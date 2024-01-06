@@ -1,9 +1,17 @@
 function reiniciarColores() {
     precio = 0;
+    lblQuiniela.value = '';
+    
     document.getElementById('totalPrecio').innerText = "0";
+
     var celdas = document.querySelectorAll("#tablaPartidos td");
     celdas.forEach(function (celda) {
         celda.style.backgroundColor = '';
+    });
+
+    var alertas = document.querySelectorAll('#contenedorAlertas .alert');
+    alertas.forEach(function (alerta) {
+        alerta.parentNode.removeChild(alerta);
     });
 }
 
@@ -49,9 +57,6 @@ function calcularPrecio() {
     precio7 = 0;
     precio8 = 0;
     precio9 = 0;
-    precio10 = 0;
-    precio11 = 0;
-    precio12 = 0;
     cantidadesCeldasRojo = {};
 
     var filas = document.querySelectorAll('#tablaPartidos tbody tr');
@@ -101,14 +106,54 @@ function calcularPrecio() {
         precio4 = 30;
     }
 
+    if (cantidadesCeldasRojo['tr5'] === 1) {
+        precio5 = 10;
+    } else if (cantidadesCeldasRojo['tr5'] === 2) {
+        precio5 = 20;
+    } else if (cantidadesCeldasRojo['tr5'] === 3) {
+        precio5 = 30;
+    }
 
-    if (cantidadesCeldasRojo['tr1'] === 1 && cantidadesCeldasRojo['tr2'] === 1 && cantidadesCeldasRojo['tr3'] === 1 && cantidadesCeldasRojo['tr4']=== 1) {
+    if (cantidadesCeldasRojo['tr6'] === 1) {
+        precio6 = 10;
+    } else if (cantidadesCeldasRojo['tr6'] === 2) {
+        precio6 = 20;
+    } else if (cantidadesCeldasRojo['tr6'] === 3) {
+        precio6 = 30;
+    }
+
+    if (cantidadesCeldasRojo['tr7'] === 1) {
+        precio7 = 10;
+    } else if (cantidadesCeldasRojo['tr7'] === 2) {
+        precio7 = 20;
+    } else if (cantidadesCeldasRojo['tr7'] === 3) {
+        precio7 = 30;
+    }
+
+    if (cantidadesCeldasRojo['tr8'] === 1) {
+        precio8 = 10;
+    } else if (cantidadesCeldasRojo['tr8'] === 2) {
+        precio8 = 20;
+    } else if (cantidadesCeldasRojo['tr8'] === 3) {
+        precio8 = 30;
+    }
+
+    if (cantidadesCeldasRojo['tr9'] === 1) {
+        precio9 = 10;
+    } else if (cantidadesCeldasRojo['tr9'] === 2) {
+        precio9 = 20;
+    } else if (cantidadesCeldasRojo['tr9'] === 3) {
+        precio9 = 30;
+    }
+
+
+    if (cantidadesCeldasRojo['tr1'] === 1 && cantidadesCeldasRojo['tr2'] === 1 && cantidadesCeldasRojo['tr3'] === 1 && cantidadesCeldasRojo['tr4']=== 1 && cantidadesCeldasRojo['tr5']=== 1 && cantidadesCeldasRojo['tr6']=== 1 && cantidadesCeldasRojo['tr7']=== 1 && cantidadesCeldasRojo['tr8']=== 1 && cantidadesCeldasRojo['tr9']=== 1) {
         precio = 10;
-    }else if (cantidadesCeldasRojo['tr1'] === 0 && cantidadesCeldasRojo['tr2'] === 0 && cantidadesCeldasRojo['tr3'] === 0 && cantidadesCeldasRojo['tr4']=== 0){
+    }else if (cantidadesCeldasRojo['tr1'] === 0 || cantidadesCeldasRojo['tr2'] === 0 || cantidadesCeldasRojo['tr3'] === 0 || cantidadesCeldasRojo['tr4'] === 0 || cantidadesCeldasRojo['tr5'] === 0 || cantidadesCeldasRojo['tr6'] === 0 || cantidadesCeldasRojo['tr7'] === 0 || cantidadesCeldasRojo['tr8'] === 0 || cantidadesCeldasRojo['tr9'] === 0){
         precio = 0;
     } else {
-        precio = precio1 + precio2 + precio3 + precio4 + precio5 + precio6 + precio7 + precio8 + precio9 + precio10 + precio11 + precio12
-        precio = precio - 30;
+        precio = precio1 + precio2 + precio3 + precio4 + precio5 + precio6 + precio7 + precio8 + precio9
+        precio = precio - 80;
     }
 
     document.getElementById('totalPrecio').innerText = precio;
@@ -117,13 +162,19 @@ function calcularPrecio() {
 
 function mostrarSeleccionados() {
     nombreQuiniela = lblQuiniela.value;
-    console.log(nombreQuiniela)
+
+    calcularPrecio();
+
+
+    if (cantidadesCeldasRojo['tr1'] === 0 || cantidadesCeldasRojo['tr2'] === 0 || cantidadesCeldasRojo['tr3'] === 0 || cantidadesCeldasRojo['tr4'] === 0 || cantidadesCeldasRojo['tr5'] === 0 || cantidadesCeldasRojo['tr6'] === 0 || cantidadesCeldasRojo['tr7'] === 0 || cantidadesCeldasRojo['tr8'] === 0 || cantidadesCeldasRojo['tr9'] === 0){
+        window.alert('¡Debe seleccionar al menos un resultado por partido!');
+        return;
+    }
+
     if (nombreQuiniela === '') {
         window.alert('¡Debe de ingresar el nombre de la quiniela!');
         return;
     }
-
-    calcularPrecio();
 
     var filas = document.querySelectorAll('tr');
 
@@ -140,7 +191,6 @@ function mostrarSeleccionados() {
         }
     });
 
-    // Obtén el contenedor de alertas
     var contenedorAlertas = document.getElementById('contenedorAlertas');
 
     var nuevaAlerta = document.createElement('div');
@@ -150,7 +200,7 @@ function mostrarSeleccionados() {
 
     var textoAlerta = document.createElement('p');
     textoAlerta.classList.add('mb-0');
-    textoAlerta.textContent = Object.values(letrasPorFila).join(', ') + ' - ' +nombreQuiniela + ' $' + precio;
+    textoAlerta.textContent = Object.values(letrasPorFila).join(', ') + ' - ' + nombreQuiniela + ' $' + precio;
 
     nuevaAlerta.appendChild(textoAlerta);
 
@@ -158,21 +208,29 @@ function mostrarSeleccionados() {
 }
 
 
-function enviar() {
-    var alertas = document.querySelectorAll('.alert');
+function enviar(res) {
 
-    var textosAlertas = [];
+    var mensaje;
+    var numeroTelefono = '528992156235';
+    var enlaceWhatsApp;
 
-    alertas.forEach(function (alerta) {
-        var textoAlerta = alerta.textContent.trim();
-        textosAlertas.push(textoAlerta);
-    });
+    if (res === 'informes') {
+        mensaje = '¡Hola, necesito informes!';
+    }
 
-    var mensaje = '¡Hola esta es mi quiniela!\n\n' + textosAlertas.join('\n');
+    if (res === 'enviar') {
+        var alertas = document.querySelectorAll('.alert');
 
-    var numeroTelefono = '528991692609';
-
-    var enlaceWhatsApp = 'https://wa.me/' + numeroTelefono + '?text=' + encodeURIComponent(mensaje);
-
+        var textosAlertas = [];
+    
+        alertas.forEach(function (alerta) {
+            var textoAlerta = alerta.textContent.trim();
+            textosAlertas.push(textoAlerta);
+        });
+    
+        mensaje = '¡Hola esta es mi quiniela!\n\n' + textosAlertas.join('\n');        
+    } 
+    enlaceWhatsApp = 'https://wa.me/' + numeroTelefono + '?text=' + encodeURIComponent(mensaje);
+    
     window.open(enlaceWhatsApp);
 }
